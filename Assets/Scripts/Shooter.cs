@@ -17,6 +17,12 @@ public class Shooter : MonoBehaviour
 
     [HideInInspector] public bool isFiring;
     private Sequence _firingSequence;
+    private AudioPlayer _audioPlayer;
+
+    private void Awake()
+    {
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
+    }
 
     private void Start()
     {
@@ -38,10 +44,8 @@ public class Shooter : MonoBehaviour
         {
             float firingRate = useAI ? baseFiringRate + Random.Range(-firingRateVariance, firingRateVariance) : baseFiringRate;
             _firingSequence = DOTween.Sequence()
-                .AppendCallback(FireProjectile) // Fire the first projectile immediately
+                .AppendCallback(FireProjectile) 
                 .AppendInterval(firingRate) // Initial delay
-                .AppendCallback(FireProjectile) // Fire projectiles at intervals
-                .AppendInterval(firingRate) // Delay between shots
                 .SetLoops(-1); // Loop indefinitely
         }
         else if (!isFiring && _firingSequence != null)
@@ -54,6 +58,7 @@ public class Shooter : MonoBehaviour
     private void FireProjectile()
     {
         Vector3 shootingDirection = useAI ? -transform.up : transform.up; 
+        _audioPlayer.PlayShootingClip();
         GameObject instance = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Rigidbody2D rb = instance.GetComponent<Rigidbody2D>();
         if (rb != null)

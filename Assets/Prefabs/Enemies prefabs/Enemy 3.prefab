@@ -185,6 +185,6 @@ MonoBehaviour:
   projectileLifeTime: 5
   baseFiringRate: 0.2
   useAI: 1
-  firingRateVariance: 0.1
-  minimumFiringRate: 0.1
+  firingRateVariance: 0.3
+  minimumFiringRate: 1.2
   isFiring: 0
