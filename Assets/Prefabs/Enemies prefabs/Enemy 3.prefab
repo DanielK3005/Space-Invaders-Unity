@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -2040412015372118397}
   - component: {fileID: 4659763135122367606}
   - component: {fileID: 1264654314805646566}
+  - component: {fileID: -1061749989725129183}
   m_Layer: 7
   m_Name: Enemy 3
   m_TagString: Untagged
@@ -166,3 +167,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-1061749989725129183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642053590963689104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e336be014ec02604eaea0e45a8101e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 318773841186781342, guid: cb8385b10432e4c4f811944147c6f864,
+    type: 3}
+  projectileSpeed: 10
+  projectileLifeTime: 5
+  baseFiringRate: 0.2
+  useAI: 1
+  firingRateVariance: 0.1
+  minimumFiringRate: 0.1
+  isFiring: 0
