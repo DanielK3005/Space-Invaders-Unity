@@ -2,44 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
+
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] enemyPrefabs; // Array of enemy prefabs
     [SerializeField] private PathCreator[] paths;       // Array of paths
 
     [SerializeField] private float spawnInterval = 3f; // Time interval between spawns
-    private float timeSinceLastSpawn;
+    [SerializeField] private int enemiesPerWave = 5;   // Number of enemies per wave
 
+    private int _randomEnemyIndex;
+    private int _randomPathIndex;
+    private PathCreator _chosenPath;
     private void Start()
     {
-        timeSinceLastSpawn = spawnInterval; 
+        StartCoroutine(SpawnWave()); 
     }
 
-    private void Update()
+    private IEnumerator SpawnWave()
     {
-        // Decrease the timer
-        timeSinceLastSpawn -= Time.deltaTime;
-
-        // Check if it's time to spawn a new enemy
-        if (timeSinceLastSpawn <= 0f)
+        while (true) // Continue spawning waves indefinitely
         {
-            SpawnEnemy();
-            timeSinceLastSpawn = spawnInterval; // Reset the timer
+            _randomEnemyIndex = Random.Range(0, enemyPrefabs.Length);
+            _randomPathIndex = Random.Range(0, paths.Length);
+            
+            for (int i = 0; i < enemiesPerWave; i++)
+            {
+                SpawnEnemy(_randomEnemyIndex, _randomPathIndex); // Spawn an enemy
+                yield return new WaitForSeconds(spawnInterval); // Wait for a duration before the next enemy spawn
+            }
+
+            yield return new WaitForSeconds(spawnInterval); // Wait before starting the next wave
         }
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(int randomEnemyIndex,int randomPathIndex)
     {
-        int randomEnemyIndex = Random.Range(0, enemyPrefabs.Length); // Choose a random enemy prefab
-        int randomPathIndex = Random.Range(0, paths.Length); // Choose a random path index
+        _chosenPath = paths[randomPathIndex];
+        var transform1 = transform;
+        GameObject newEnemy = Instantiate(enemyPrefabs[randomEnemyIndex], transform1.position, Quaternion.identity);
 
-        GameObject newEnemy = Instantiate(enemyPrefabs[randomEnemyIndex], transform.position, Quaternion.identity, transform);
-
-        // Get the chosen path
-        PathCreator chosenPath = paths[randomPathIndex];
-
-        // Assign the path to the spawned enemy
         PathFollower pathFollower = newEnemy.GetComponent<PathFollower>();
-        pathFollower.SetPath(chosenPath);
+        pathFollower.SetPath(_chosenPath);
     }
 }

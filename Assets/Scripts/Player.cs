@@ -1,15 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    //movment fields.
+    //movement fields.
     [SerializeField] private float moveSpeed = 15f;
     private Vector2 _moveInput;
-    private Vector3 _delta;
+    private Vector2 _delta;
     private Vector3 _newPosition;
 
     //bounds fields.
@@ -17,8 +14,15 @@ public class Player : MonoBehaviour
     private Vector2 _maxBounds;
     private Camera _mainCamera;
     private const float SidePadding = 0.5f;
-    private const int UpPadding = -5;
-    private const int DownPadding = 7;
+    private const float UpPadding = 0.5f;
+    private const float DownPadding =0.5f;
+
+    private Shooter _shooter;
+
+    private void Awake()
+    {
+        _shooter = GetComponent<Shooter>();
+    }
 
     private void Start()
     {
@@ -28,8 +32,11 @@ public class Player : MonoBehaviour
     private void InitBoundes()
     {
         _mainCamera = Camera.main;
-        _minBounds = _mainCamera.ViewportToWorldPoint(new Vector2(0, 0));
-        _maxBounds = _mainCamera.ViewportToWorldPoint(new Vector2(1, 1));
+        if (_mainCamera != null)
+        {
+            _minBounds = _mainCamera.ViewportToWorldPoint(new Vector2(0, 0));
+            _maxBounds = _mainCamera.ViewportToWorldPoint(new Vector2(1, 1));
+        }
     }
 
     void Update()
@@ -42,13 +49,23 @@ public class Player : MonoBehaviour
     {
         _moveInput = value.Get<Vector2>();
     }
+
+    void OnFire(InputValue value)
+    {
+        if (_shooter != null)
+        {
+            _shooter.isFiring = value.isPressed;
+        }
+    }
     
-    //the actual movment calculation of the player - on update.
+    //the actual movement calculation of the player - on update.
     private void Move()
     {
         _delta = (_moveInput * (moveSpeed * Time.deltaTime));
-        _newPosition.x = Mathf.Clamp(transform.position.x + _delta.x, _minBounds.x + SidePadding, _maxBounds.x - SidePadding);
-        _newPosition.y = Mathf.Clamp(transform.position.y + _delta.y, _minBounds.y + DownPadding, _maxBounds.y - UpPadding);
-        transform.position = _newPosition;
+        var position = transform.position;
+        _newPosition.x = Mathf.Clamp(position.x + _delta.x, _minBounds.x + SidePadding, _maxBounds.x - SidePadding);
+        _newPosition.y = Mathf.Clamp(position.y + _delta.y, _minBounds.y + DownPadding, _maxBounds.y - UpPadding);
+        position = _newPosition;
+        transform.position = position;
     }
 }
