@@ -3,6 +3,7 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour
 {
     [SerializeField] private int damage = 10;
+    [SerializeField] private bool _isPlayer = false;
 
     public int GetDamage()
     {
@@ -11,6 +12,9 @@ public class DamageDealer : MonoBehaviour
 
     public void Hit()
     {
-        Destroy(gameObject);
+        if (!_isPlayer)
+        {
+            Destroy(gameObject);
+        }
     }
 }

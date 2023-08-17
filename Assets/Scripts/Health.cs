@@ -2,16 +2,24 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] private bool _isPlayer;
     [SerializeField] private int health = 50;
-    [SerializeField] private CameraShake cameraShake;
-    [SerializeField] private float shakeDuration = 0.2f;
-    [SerializeField] private float shakeMagnitude = 0.1f;
+    [SerializeField] private int _score = 50;
+    
+    private CameraShake cameraShake;
+    private const float ShakeDuration = 0.2f;
+    private const float ShakeMagnitude = 0.1f;
     
     private AudioPlayer _audioPlayer;
+    private ScoreKeeper _scoreKeeper;
+    private LevelManager _levelManager;
 
     private void Awake()
     {
+        cameraShake = Camera.main.GetComponent<CameraShake>();
         _audioPlayer = FindObjectOfType<AudioPlayer>();
+        _scoreKeeper = FindObjectOfType<ScoreKeeper>();
+        _levelManager = FindObjectOfType<LevelManager>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -20,18 +28,9 @@ public class Health : MonoBehaviour
         if (damageDealer != null)
         {
             TakeDamage(damageDealer.GetDamage());
-            damageDealer.Hit();
-        }
-
-        if (_audioPlayer != null)
-        {
             _audioPlayer.PlayDamageClip();
-        }
-        
-        // Trigger camera shake when taking damage - will apply on player 
-        if (cameraShake != null)
-        {
-            cameraShake.ShakeCamera(shakeDuration, shakeMagnitude);
+            cameraShake.ShakeCamera(ShakeDuration, ShakeMagnitude);
+            damageDealer.Hit();
         }
     }
 
@@ -40,7 +39,25 @@ public class Health : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        if (_isPlayer)
+        {
+            _levelManager.LoadGameOver();
+        }
+        else
+        {
+            _scoreKeeper.ChangeScore(_score);
+        }
+        Destroy(gameObject);
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 }

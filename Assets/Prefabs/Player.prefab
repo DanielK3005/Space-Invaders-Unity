@@ -80,7 +80,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce29cea42560a34aae8ec48d8018133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPlayer: 1
   health: 50
+  _score: 0
 --- !u!114 &1912321513532996994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 448799f9ef9b81a48ae5f8981b1d401f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 100
+  _isPlayer: 1
 --- !u!50 &-2032947159386479452
 Rigidbody2D:
   serializedVersion: 4
@@ -162,7 +165,10 @@ MonoBehaviour:
     type: 3}
   projectileSpeed: 10
   projectileLifeTime: 5
-  firingRate: 0.2
+  baseFiringRate: 0.2
+  useAI: 0
+  firingRateVariance: 0
+  minimumFiringRate: 0.1
   isFiring: 0
 --- !u!1 &8510233407173085388
 GameObject:
