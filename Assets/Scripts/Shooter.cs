@@ -26,8 +26,8 @@ public class Shooter : MonoBehaviour
 
     private void Start()
     {
-        if (useAI)  //the shooter is a enemy made in EnemySpawner
-        {
+        if (useAI)
+        {// Adjust firing rate for AI enemies
             isFiring = true;
             baseFiringRate = Mathf.Max(baseFiringRate - firingRateVariance, minimumFiringRate);
         }
@@ -35,39 +35,42 @@ public class Shooter : MonoBehaviour
 
     private void Update()
     {
-        Fire();
+        Fire(); 
     }
-
+    
     private void Fire()
     {
         if (isFiring && _firingSequence == null)
-        {
+        {// Calculate firing rate, accounting for AI variance
             float firingRate = useAI ? baseFiringRate + Random.Range(-firingRateVariance, firingRateVariance) : baseFiringRate;
+            // Create a firing sequence with initial delay and looping
             _firingSequence = DOTween.Sequence()
-                .AppendCallback(FireProjectile) 
+                .AppendCallback(FireProjectile) // Fire a projectile
                 .AppendInterval(firingRate) // Initial delay
                 .SetLoops(-1); // Loop indefinitely
         }
         else if (!isFiring && _firingSequence != null)
-        {
+        {// Stop firing sequence if not firing anymore
             _firingSequence.Kill();
             _firingSequence = null;
         }
     }
 
+    // Fire a projectile in the specified direction
     private void FireProjectile()
     {
-        Vector3 shootingDirection = useAI ? -transform.up : transform.up; 
-        _audioPlayer.PlayShootingClip();
-        GameObject instance = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        Vector3 shootingDirection = useAI ? -transform.up : transform.up; // Determine shooting direction
+        _audioPlayer.PlayShootingClip(); // Play shooting sound
+        GameObject instance = Instantiate(projectilePrefab, transform.position, Quaternion.identity); // Create a projectile instance
         Rigidbody2D rb = instance.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            rb.velocity = shootingDirection * projectileSpeed;
+            rb.velocity = shootingDirection * projectileSpeed; // Set projectile velocity
         }
-        Destroy(instance, projectileLifeTime);
+        Destroy(instance, projectileLifeTime); // Destroy projectile after a certain lifetime
     }
     
+    // Clean up firing sequence on object destruction
     private void OnDestroy()
     {
         if (_firingSequence != null)

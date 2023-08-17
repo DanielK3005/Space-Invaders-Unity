@@ -36,13 +36,17 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void SpawnEnemy(int randomEnemyIndex,int randomPathIndex)
+    // This function spawns an enemy using the provided enemy index and path index
+    private void SpawnEnemy(int randomEnemyIndex, int randomPathIndex)
     {
         _chosenPath = paths[randomPathIndex];
-        var transform1 = transform;
-        GameObject newEnemy = Instantiate(enemyPrefabs[randomEnemyIndex], transform1.position, Quaternion.identity);
+        // Get the starting position of the path and use it as the spawn position for the enemy
+        Vector3 spawnPosition = _chosenPath.path.GetPointAtDistance(0, EndOfPathInstruction.Stop);
+        GameObject newEnemy = Instantiate(enemyPrefabs[randomEnemyIndex], spawnPosition, Quaternion.identity);
 
+        // Get the PathFollower component of the new enemy and set its path
         PathFollower pathFollower = newEnemy.GetComponent<PathFollower>();
         pathFollower.SetPath(_chosenPath);
     }
+
 }

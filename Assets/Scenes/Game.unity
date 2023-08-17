@@ -189,7 +189,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70.6
+  m_fontSize: 70.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -761,8 +761,8 @@ MonoBehaviour:
   - {fileID: 6726053544863668126, guid: d292e1702c1fe8a45b4e81dc40f44416, type: 3}
   - {fileID: 5527450515611377120, guid: cc8d0506270a35d49b64228a5ef526cb, type: 3}
   - {fileID: 6719985072283774957, guid: b581adf2294b35e4c96f6fc4bfe7709d, type: 3}
-  spawnInterval: 3
-  enemiesPerWave: 5
+  spawnInterval: 1.8
+  enemiesPerWave: 7
 --- !u!4 &901936366
 Transform:
   m_ObjectHideFlags: 0
@@ -1492,6 +1492,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507572038605137982, guid: 021551cb23586f744860a9f314624bb7,
+        type: 3}
+      propertyPath: spawnInterval
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507572038605137982, guid: 021551cb23586f744860a9f314624bb7,
+        type: 3}
+      propertyPath: enemiesPerWave
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4507572038605137983, guid: 021551cb23586f744860a9f314624bb7,
         type: 3}

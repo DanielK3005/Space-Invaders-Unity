@@ -23,10 +23,11 @@ public class Health : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if the collider contains a DamageDealer component
         DamageDealer damageDealer = other.GetComponent<DamageDealer>();
 
         if (damageDealer != null)
-        {
+        {// Take damage, play damage sound, shake camera, and notify DamageDealer it's been hit
             TakeDamage(damageDealer.GetDamage());
             _audioPlayer.PlayDamageClip();
             cameraShake.ShakeCamera(ShakeDuration, ShakeMagnitude);
@@ -35,7 +36,7 @@ public class Health : MonoBehaviour
     }
 
     private void TakeDamage(int damage)
-    {
+    {// Reduce health and check if health is zero or below
         health -= damage;
         if (health <= 0)
         {
@@ -46,16 +47,17 @@ public class Health : MonoBehaviour
     private void Die()
     {
         if (_isPlayer)
-        {
+        {// If this is the player, update best scores, and load the game over screen
+            _scoreKeeper.UpdateBestScores();
             _levelManager.LoadGameOver();
         }
         else
-        {
+        {// If not the player, increase the score 
             _scoreKeeper.ChangeScore(_score);
         }
         Destroy(gameObject);
     }
-
+    
     public int GetHealth()
     {
         return health;
