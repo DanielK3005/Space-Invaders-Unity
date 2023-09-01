@@ -70,21 +70,20 @@ public class ScoreKeeper : MonoBehaviour
         _score.Score += scoreToAdd;
         _score.Score = Mathf.Clamp(_score.Score, 0, int.MaxValue); // Ensure score doesn't go below 0
     }
-    public void ResetScore()
+    public void ResetScore(string name)
     {
-        if (_score == null)
-        {
-            _score = new ScoreEntry();
-        }
+            _score= new ScoreEntry();
+            this.SetName(name);
             _score.Score = 0;
     }
 
     public void SetName(string name)
     {
-        if (_score == null)
-        {
-            _score = new ScoreEntry();
-        }
             _score.PlayerName = name;
+    }
+
+    public string GetTheCureentPlayerName()
+    {
+        return _score.PlayerName;
     }
 }

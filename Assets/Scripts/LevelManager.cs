@@ -17,10 +17,13 @@ public class LevelManager : MonoBehaviour
     }
     public void LoadGame()
     {
-        _scoreKeeper.ResetScore();
         if(playerName != null)
         {
-        _scoreKeeper.SetName(playerName.text);
+        _scoreKeeper.ResetScore(playerName.text);
+        }
+        else
+        {
+        _scoreKeeper.ResetScore(_scoreKeeper.GetTheCureentPlayerName());
         }
         SceneManager.LoadScene("Game");
     }
